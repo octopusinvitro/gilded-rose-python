@@ -2,7 +2,7 @@ import unittest
 
 from approvaltests.combination_approvals import verify_all_combinations
 
-from app.gilded_rose import AgedBrie, BackstagePass, Default, Item, GildedRose
+from app.gilded_rose import AgedBrie, BackstagePass, Default, Item, ItemTypes, GildedRose
 
 
 class TestGildedRoseUpdateQuality(unittest.TestCase):
@@ -13,7 +13,7 @@ class TestGildedRoseUpdateQuality(unittest.TestCase):
         return gilded_rose.items[0]
 
     def test_updates_quality(self):
-        names = ["name", "Aged Brie", "Backstage passes to a TAFKAL80ETC concert", "Sulfuras, Hand of Ragnaros"]
+        names = ["name", ItemTypes.AGED_BRIE.value, ItemTypes.BACKSTAGE_PASS.value, ItemTypes.SULFURAS.value]
         sell_ins = [-1, 0, 2, 6, 11]
         qualities = [0, 1, 49, 50]
         verify_all_combinations(self.update_quality, [names, sell_ins, qualities])
@@ -21,15 +21,15 @@ class TestGildedRoseUpdateQuality(unittest.TestCase):
 
 class TestItemCreate(unittest.TestCase):
     def test_creates_an_aged_brie(self):
-        item = Item.create("Aged Brie", 0, 0)
+        item = Item.create(ItemTypes.AGED_BRIE.value, 0, 0)
         self.assertIsInstance(item, AgedBrie)
 
     def test_creates_a_backstage_pass(self):
-        item = Item.create("Backstage passes to a TAFKAL80ETC concert", 0, 0)
+        item = Item.create(ItemTypes.BACKSTAGE_PASS.value, 0, 0)
         self.assertIsInstance(item, BackstagePass)
 
     def test_creates_a_sulfuras(self):
-        item = Item.create("Sulfuras, Hand of Ragnaros", 0, 0)
+        item = Item.create(ItemTypes.SULFURAS.value, 0, 0)
         self.assertIsInstance(item, Item)
 
     def test_creates_a_default(self):

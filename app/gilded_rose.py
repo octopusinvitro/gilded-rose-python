@@ -1,3 +1,12 @@
+from enum import Enum
+
+
+class ItemTypes(Enum):
+    AGED_BRIE = "Aged Brie"
+    BACKSTAGE_PASS = "Backstage passes to a TAFKAL80ETC concert"
+    SULFURAS = "Sulfuras, Hand of Ragnaros"
+
+
 class GildedRose(object):
     def __init__(self, items):
         self.items = items
@@ -7,18 +16,16 @@ class GildedRose(object):
             item.update_quality()
 
 
-
-
 class Item:
     @classmethod
     def create(cls, name, sell_in, quality):
-        if name == "Aged Brie":
+        if name == ItemTypes.AGED_BRIE.value:
             return AgedBrie(sell_in, quality)
 
-        if name == "Backstage passes to a TAFKAL80ETC concert":
+        if name == ItemTypes.BACKSTAGE_PASS.value:
             return BackstagePass(sell_in, quality)
 
-        if name == "Sulfuras, Hand of Ragnaros":
+        if name == ItemTypes.SULFURAS.value:
             return Item(name, sell_in, quality)
 
         return Default(name, sell_in, quality)
@@ -37,7 +44,7 @@ class Item:
 
 class AgedBrie(Item):
     def __init__(self, sell_in, quality):
-        super().__init__("Aged Brie", sell_in, quality)
+        super().__init__(ItemTypes.AGED_BRIE.value, sell_in, quality)
 
     def update_quality(self):
         self.sell_in = self.sell_in - 1
@@ -55,7 +62,7 @@ class AgedBrie(Item):
 
 class BackstagePass(Item):
     def __init__(self, sell_in, quality):
-        super().__init__("Backstage passes to a TAFKAL80ETC concert", sell_in, quality)
+        super().__init__(ItemTypes.BACKSTAGE_PASS.value, sell_in, quality)
 
     def update_quality(self):
         self.sell_in = self.sell_in - 1
