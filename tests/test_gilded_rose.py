@@ -51,7 +51,7 @@ class TestItemUpdateQuality(unittest.TestCase):
 
 class TestAgedBrieUpdateQuality(unittest.TestCase):
     def update_quality(self, sell_in, quality):
-        item = AgedBrie(sell_in, quality)
+        item = AgedBrie(ItemTypes.AGED_BRIE.value, sell_in, quality)
         item.update_quality()
         return item
 
@@ -86,7 +86,7 @@ class TestAgedBrieUpdateQuality(unittest.TestCase):
 
 class TestBackstagePassesUpdateQuality(unittest.TestCase):
     def update_quality(self, sell_in, quality):
-        item = BackstagePass(sell_in, quality)
+        item = BackstagePass(ItemTypes.BACKSTAGE_PASS.value, sell_in, quality)
         item.update_quality()
         return item
 

@@ -19,16 +19,13 @@ class GildedRose(object):
 class Item:
     @classmethod
     def create(cls, name, sell_in, quality):
-        if name == ItemTypes.AGED_BRIE.value:
-            return AgedBrie(sell_in, quality)
+        klass = {
+            ItemTypes.AGED_BRIE.value: AgedBrie,
+            ItemTypes.BACKSTAGE_PASS.value: BackstagePass,
+            ItemTypes.SULFURAS.value: Item
+        }.get(name, Default)
 
-        if name == ItemTypes.BACKSTAGE_PASS.value:
-            return BackstagePass(sell_in, quality)
-
-        if name == ItemTypes.SULFURAS.value:
-            return Item(name, sell_in, quality)
-
-        return Default(name, sell_in, quality)
+        return klass(name, sell_in, quality)
 
     def __init__(self, name, sell_in, quality):
         self.name = name
@@ -43,9 +40,6 @@ class Item:
 
 
 class AgedBrie(Item):
-    def __init__(self, sell_in, quality):
-        super().__init__(ItemTypes.AGED_BRIE.value, sell_in, quality)
-
     def update_quality(self):
         self.sell_in = self.sell_in - 1
         if self.quality > 50:
@@ -61,9 +55,6 @@ class AgedBrie(Item):
 
 
 class BackstagePass(Item):
-    def __init__(self, sell_in, quality):
-        super().__init__(ItemTypes.BACKSTAGE_PASS.value, sell_in, quality)
-
     def update_quality(self):
         self.sell_in = self.sell_in - 1
         if self.sell_in < 0:
@@ -84,9 +75,6 @@ class BackstagePass(Item):
 
 
 class Default(Item):
-    def __init__(self, name, sell_in, quality):
-        super().__init__(name, sell_in, quality)
-
     def update_quality(self):
         self.sell_in = self.sell_in - 1
         self.quality = self.quality - 1
