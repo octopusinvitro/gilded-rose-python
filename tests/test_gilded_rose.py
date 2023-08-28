@@ -2,7 +2,7 @@ import unittest
 
 from approvaltests.combination_approvals import verify_all_combinations
 
-from app.gilded_rose import Item, GildedRose
+from app.gilded_rose import AgedBrie, BackstagePass, Default, Item, GildedRose
 
 
 class TestGildedRoseUpdateQuality(unittest.TestCase):
@@ -142,6 +142,24 @@ class TestGildedRoseUpdateDefault(unittest.TestCase):
     def test_decreases_quality_by_two_for_quality_bigger_than_one_and_positive_sell_in(self):
         item = self.update_default(1, 3)
         self.assertEqual(item.quality, 2)
+
+
+class TestItemCreate(unittest.TestCase):
+    def test_creates_an_aged_brie(self):
+        item = Item.create("Aged Brie", 0, 0)
+        self.assertIsInstance(item, AgedBrie)
+
+    def test_creates_a_backstage_pass(self):
+        item = Item.create("Backstage passes to a TAFKAL80ETC concert", 0, 0)
+        self.assertIsInstance(item, BackstagePass)
+
+    def test_creates_a_sulfuras(self):
+        item = Item.create("Sulfuras, Hand of Ragnaros", 0, 0)
+        self.assertIsInstance(item, Item)
+
+    def test_creates_a_default(self):
+        item = Item.create("irrelevant", 0, 0)
+        self.assertIsInstance(item, Default)
 
 
 if __name__ == '__main__':
