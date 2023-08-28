@@ -112,5 +112,37 @@ class TestGildedRoseUpdateSulfuras(unittest.TestCase):
         self.assertEqual(item.quality, 0)
 
 
+class TestGildedRoseUpdateDefault(unittest.TestCase):
+    def update_default(self, sell_in, quality):
+        items = [Item("name", sell_in, quality)]
+        gilded_rose = GildedRose(items)
+        gilded_rose.update_default(gilded_rose.items[0])
+        return gilded_rose.items[0]
+
+    def test_decreases_sell_in_by_one(self):
+        item = self.update_default(0, 0)
+        self.assertEqual(item.sell_in, -1)
+
+    def test_sets_quality_to_zero_for_zero_quality(self):
+        item = self.update_default(-1, 0)
+        self.assertEqual(item.quality, 0)
+
+    def test_sets_quality_to_zero_for_quality_equal_to_one(self):
+        item = self.update_default(0, 1)
+        self.assertEqual(item.quality, 0)
+
+    def test_decreases_quality_by_two_for_quality_bigger_than_one_and_negative_sell_in(self):
+        item = self.update_default(-1, 4)
+        self.assertEqual(item.quality, 2)
+
+    def test_decreases_quality_by_two_for_quality_bigger_than_one_and_zero_sell_in(self):
+        item = self.update_default(0, 4)
+        self.assertEqual(item.quality, 2)
+
+    def test_decreases_quality_by_two_for_quality_bigger_than_one_and_positive_sell_in(self):
+        item = self.update_default(1, 3)
+        self.assertEqual(item.quality, 2)
+
+
 if __name__ == '__main__':
     unittest.main()
