@@ -25,6 +25,9 @@ class GildedRose(object):
         if item.sell_in < 5:
             self.increase_quality(item)
 
+    def update_sulfuras(self, item):
+        return
+
     def increase_quality(self, item):
         if item.quality < 50:
             item.quality = item.quality + 1
@@ -36,6 +39,9 @@ class GildedRose(object):
 
             if item.name == "Backstage passes to a TAFKAL80ETC concert":
                 return self.update_backstage_passes(item)
+
+            if item.name == "Sulfuras, Hand of Ragnaros":
+                return self.update_sulfuras(item)
 
             if item.name != "Aged Brie" and item.name != "Backstage passes to a TAFKAL80ETC concert":
                 if item.quality > 0:

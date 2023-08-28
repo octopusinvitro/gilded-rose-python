@@ -99,5 +99,18 @@ class TestGildedRoseUpdateBackstagePasses(unittest.TestCase):
         self.assertEqual(item.quality, 60)
 
 
+class TestGildedRoseUpdateSulfuras(unittest.TestCase):
+    def update_sulfuras(self, sell_in, quality):
+        items = [Item("Sulfuras, Hand of Ragnaros", sell_in, quality)]
+        gilded_rose = GildedRose(items)
+        gilded_rose.update_sulfuras(gilded_rose.items[0])
+        return gilded_rose.items[0]
+
+    def test_leaves_item_unchanged(self):
+        item = self.update_sulfuras(0, 0)
+        self.assertEqual(item.sell_in, 0)
+        self.assertEqual(item.quality, 0)
+
+
 if __name__ == '__main__':
     unittest.main()
