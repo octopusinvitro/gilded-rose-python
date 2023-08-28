@@ -162,5 +162,126 @@ class TestItemCreate(unittest.TestCase):
         self.assertIsInstance(item, Default)
 
 
+class TestItemUpdateQuality(unittest.TestCase):
+    def update_quality(self, sell_in, quality):
+        item = Item("name", sell_in, quality)
+        item.update_quality()
+        return item
+
+    def test_leaves_item_unchanged(self):
+        item = self.update_quality(0, 0)
+        self.assertEqual(item.sell_in, 0)
+        self.assertEqual(item.quality, 0)
+
+
+class TestAgedBrieUpdateQuality(unittest.TestCase):
+    def update_quality(self, sell_in, quality):
+        item = AgedBrie(sell_in, quality)
+        item.update_quality()
+        return item
+
+    def test_decreases_sell_in_by_one(self):
+        item = self.update_quality(0, 0)
+        self.assertEqual(item.sell_in, -1)
+
+    def test_increases_quality_by_two_for_negative_sell_in(self):
+        item = self.update_quality(-1, 0)
+        self.assertEqual(item.quality, 2)
+
+    def test_increases_quality_by_two_for_zero_sell_in(self):
+        item = self.update_quality(0, 0)
+        self.assertEqual(item.quality, 2)
+
+    def test_increases_quality_by_one_for_positive_sell_in(self):
+        item = self.update_quality(1, 0)
+        self.assertEqual(item.quality, 1)
+
+    def test_does_not_increase_quality_beyond_limit_if_lower_than_limit(self):
+        item = self.update_quality(0, 49)
+        self.assertEqual(item.quality, 50)
+
+    def test_does_not_increase_quality_beyond_limit_if_equal_to_limit(self):
+        item = self.update_quality(1, 50)
+        self.assertEqual(item.quality, 50)
+
+    def test_does_not_increase_quality_beyond_limit_if_bigger_than_limit(self):
+        item = self.update_quality(1, 60)
+        self.assertEqual(item.quality, 60)
+
+
+class TestBackstagePassesUpdateQuality(unittest.TestCase):
+    def update_quality(self, sell_in, quality):
+        item = BackstagePass(sell_in, quality)
+        item.update_quality()
+        return item
+
+    def test_decreases_sell_in_by_one(self):
+        item = self.update_quality(0, 0)
+        self.assertEqual(item.sell_in, -1)
+
+    def test_sets_quality_to_zero_for_negative_sell_in(self):
+        item = self.update_quality(-1, 1)
+        self.assertEqual(item.quality, 0)
+
+    def test_sets_quality_to_zero_for_zero_sell_in(self):
+        item = self.update_quality(0, 1)
+        self.assertEqual(item.quality, 0)
+
+    def test_increases_quality_by_three_for_sell_in_below_first_limit(self):
+        item = self.update_quality(5, 0)
+        self.assertEqual(item.quality, 3)
+
+    def test_increases_quality_by_two_for_sell_in_below_second_limit(self):
+        item = self.update_quality(6, 0)
+        self.assertEqual(item.quality, 2)
+
+    def test_increases_quality_by_one_for_sell_in_beyond_second_limit(self):
+        item = self.update_quality(11, 0)
+        self.assertEqual(item.quality, 1)
+
+    def test_does_not_increase_quality_beyond_limit_if_lower_than_limit(self):
+        item = self.update_quality(6, 49)
+        self.assertEqual(item.quality, 50)
+
+    def test_does_not_increase_quality_beyond_limit_if_equal_to_limit(self):
+        item = self.update_quality(11, 50)
+        self.assertEqual(item.quality, 50)
+
+    def test_does_not_increase_quality_beyond_limit_if_bigger_than_limit(self):
+        item = self.update_quality(5, 60)
+        self.assertEqual(item.quality, 60)
+
+
+class TestDefaultUpdateQuality(unittest.TestCase):
+    def update_quality(self, sell_in, quality):
+        item = Default("name", sell_in, quality)
+        item.update_quality()
+        return item
+
+    def test_decreases_sell_in_by_one(self):
+        item = self.update_quality(0, 0)
+        self.assertEqual(item.sell_in, -1)
+
+    def test_sets_quality_to_zero_for_zero_quality(self):
+        item = self.update_quality(-1, 0)
+        self.assertEqual(item.quality, 0)
+
+    def test_sets_quality_to_zero_for_quality_equal_to_one(self):
+        item = self.update_quality(0, 1)
+        self.assertEqual(item.quality, 0)
+
+    def test_decreases_quality_by_two_for_quality_bigger_than_one_and_negative_sell_in(self):
+        item = self.update_quality(-1, 4)
+        self.assertEqual(item.quality, 2)
+
+    def test_decreases_quality_by_two_for_quality_bigger_than_one_and_zero_sell_in(self):
+        item = self.update_quality(0, 4)
+        self.assertEqual(item.quality, 2)
+
+    def test_decreases_quality_by_two_for_quality_bigger_than_one_and_positive_sell_in(self):
+        item = self.update_quality(1, 3)
+        self.assertEqual(item.quality, 2)
+
+
 if __name__ == '__main__':
     unittest.main()
